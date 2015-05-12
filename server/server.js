@@ -1,4 +1,5 @@
 var http = require('http');
+var cassandra = require('cassandra-connection');
 
 http.createServer(function(req, res){
 	var data = "";
@@ -16,7 +17,9 @@ http.createServer(function(req, res){
 }).listen(5000);
 
 function insertIntoCassandra (entry) {
+	cassandra.SendToCassandra(entry);
 	console.log(entry.mac);
 }
 
 console.log("Listening...");
+
