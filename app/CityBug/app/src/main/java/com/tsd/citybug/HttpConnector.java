@@ -1,6 +1,7 @@
 package com.tsd.citybug;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -42,7 +43,7 @@ public class HttpConnector {
     }
 
     private class HttpAsyncTask extends AsyncTask<String,Void,Boolean> {
-        private final String IP_ADDRESS = "192.168.1.66";
+        private final String IP_ADDRESS = "192.168.1.70";
         private final int PORT = 5000;
 
         @Override
