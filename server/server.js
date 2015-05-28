@@ -1,7 +1,9 @@
 var http = require('http');
-var cassandra = require('cassandra-connection');
+var cassandra = require('./cassandra-connection.js');
 
 http.createServer(function(req, res){
+	console.log("Somebody connected.")
+
 	var data = "";
 	req.setEncoding("utf-8");
 	req.on("data", function (chunk) {
@@ -18,7 +20,7 @@ http.createServer(function(req, res){
 
 function insertIntoCassandra (entry) {
 	cassandra.SendToCassandra(entry);
-	console.log(entry.mac);
+	console.log("MAC address: " + entry.mac);
 }
 
 console.log("Listening...");

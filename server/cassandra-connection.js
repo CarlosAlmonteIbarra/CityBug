@@ -1,14 +1,15 @@
 function SendToCassandra (entry) {
 
 	var Connection = require('cassandra-client').Connection;
-	var db = new Connection({host: '127.0.0.1', port: 9160, keyspace: 'CityBug'});
+	var db = new Connection({host: '192.168.1.73', port: 9160, keyspace: 'citybug'});
 
 	db.connect(function(err) {
   	if (err) {
-    throw err;
+      throw err;
   		} else {
   		var uuid = guid();
-    	db.execute('INSERT INTO Event (Id, Mac, Lat, Lon, Height, DateTime, EntryType) VALUES (?, ?,?,?,?,?,?)', [uuid, entry.mac, entry.latitude,entry.longitude,entry.height,entry.Datetime, entry.entrytype],
+    	db.execute('INSERT INTO events (id, mac, latitude, longitude, height, datetime, type) VALUES (?, ?,?,?,?,?,?)', [uuid, entry.mac, entry.latitude,entry.longitude,entry.height,entry.datetime, entry.type],
+      //db.execute('INSERT INTO events (id, mac, latitude, longitude, height, datetime, type) VALUES (now(), ?,?,?,?,?,?)', [entry.mac, entry.latitude,entry.longitude,entry.height,entry.datetime, entry.type],
       function (err) {
         if (err) {
           throw err;
