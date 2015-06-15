@@ -16,12 +16,12 @@ import org.json.JSONObject;
 
 public class HttpConnector {
 
-    public boolean send(Entry entry) {
+    public boolean send(Entry entry, String ip) {
         String json = getJSON(entry);
         Boolean result = false;
 
         try {
-            result = new HttpAsyncTask().execute(json).get(5000, TimeUnit.MILLISECONDS);
+            result = new HttpAsyncTask(ip).execute(json).get(5000, TimeUnit.MILLISECONDS);
         } catch (Exception e) { }
 
         return result;
@@ -43,14 +43,16 @@ public class HttpConnector {
     }
 
     private class HttpAsyncTask extends AsyncTask<String,Void,Boolean> {
-        private final String IP_ADDRESS = "192.168.1.70";
-        private final int PORT = 5000;
+        private String mIpAddress;
+        private final int PORT = 80;
+
+        public HttpAsyncTask(String ip) { mIpAddress = ip; }
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
                 HttpClient httpClient = new DefaultHttpClient();
-                URI uri = new URI("http", null, IP_ADDRESS, PORT, null, null, null);
+                URI uri = new URI("http", null, mIpAddress, PORT, null, null, null);
                 HttpPost httpPost = new HttpPost(uri);
                 StringEntity stringEntity = new StringEntity(params[0]);
 

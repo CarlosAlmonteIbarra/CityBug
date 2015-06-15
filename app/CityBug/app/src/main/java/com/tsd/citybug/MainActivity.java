@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class MainActivity extends ActionBarActivity implements IBroadcastReceive
     private Location mLocation;
     private Button[] mButtons = new Button[6];
     private TextView mTextViewStatus, mTextViewLatLng, mTextViewMacAddress, mTextViewPendingEntries;
+    private EditText mEditText;
     private HttpConnector mHttpConnector = new HttpConnector();
     private WifiBroadcastReceiver mWifiBroadcastReceiver = new WifiBroadcastReceiver(this, this);
     private LogManager mLogManager = new LogManager(this, "entries-log");
@@ -83,6 +85,8 @@ public class MainActivity extends ActionBarActivity implements IBroadcastReceive
         mMacAddress = getMacAddress();
         mTextViewMacAddress.setText("MAC Address: " + mMacAddress);
         displayPendingAmountOfEntries();
+
+        mEditText = (EditText) findViewById(R.id.EditTex_IP);
     }
 
     @Override
@@ -134,7 +138,7 @@ public class MainActivity extends ActionBarActivity implements IBroadcastReceive
         Entry entry = new Entry(mac, lat, lng, height, time, event);
         String message = "";
 
-        if (!mHttpConnector.send(entry)) {
+        if (!mHttpConnector.send(entry, mEditText.getText().toString())) {
             message = "Unable to send data, it will be stored in the local log.";
             mLogManager.save(mac, lat, lng, height, time, event);
             displayPendingAmountOfEntries();
@@ -155,7 +159,7 @@ public class MainActivity extends ActionBarActivity implements IBroadcastReceive
 
         for (int i = 0; i < mLogManager.getEntries().size(); i++) {
             e = mLogManager.getEntries().get(i);
-            if (mHttpConnector.send(e)) {
+            if (mHttpConnector.send(e, mEditText.getText().toString())) {
                 mLogManager.getEntries().remove(i);
                 --i;
             } else {

@@ -16,12 +16,11 @@ http.createServer(function(req, res){
 	
 	res.writeHead(200, {'Content-Type': 'text/plain'});
 	res.end("ok");
-}).listen(5000);
+}).listen(4000, '0.0.0.0');
 
 function insertIntoCassandra (entry) {
-	cassandra.SendToCassandra(entry);
+	cassandra.sendToCassandra(entry);
 	console.log("MAC address: " + entry.mac);
 }
 
 console.log("Listening...");
-
